@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.css" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <!-- <link rel="stylesheet" href="style.css">
+</link> -->
+    <style>
+        /* Import Google font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        *{
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Poppins', sans-serif;
+        }
+        body{
+          display: flex;
+          padding: 10px;
+          min-height: 100vh;
+          align-items: center;
+          justify-content: center;
+          background: #E3F2FD;
+        }
+        .container{
+          width: 850px;
+          padding: 30px 35px 35px;
+          background: #fff;
+          border-radius: 10px;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .container.disable .editor-panel,
+        .container.disable .controls .undo-changes,
+        .container.disable .controls .proceed-img{
+          opacity: 0.5;
+          pointer-events: none;
+        }
+        .container h2{
+          margin-top: -8px;
+          font-size: 22px;
+          font-weight: 500;
+        }
+        .container .wrapper{
+          display: flex;
+          margin: 20px 0;
+          min-height: 335px;
+        }
+        .wrapper .editor-panel{
+          padding: 15px 20px;
+          width: 280px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
+        .editor-panel .title{
+          display: block;
+          font-size: 16px;
+          margin-bottom: 12px;
+        }
+        .editor-panel .options, .controls{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+        .editor-panel button{
+          outline: none;
+          height: 40px;
+          font-size: 14px;
+          color: #6C757D;
+          background: #fff;
+          border-radius: 3px;
+          margin-bottom: 8px;
+          border: 1px solid #aaa;
+        }
+        .editor-panel .crop-area button{
+          width: calc(100% / 2 - 4px);
+        }
+        .editor-panel button:hover{
+          background: #f5f5f5;
+        }
+        .crop-area button.active{
+          color: #fff;
+          border-color: #5372F0;
+          background: #5372F0;
+        }
+        
+        .editor-panel .rotate{
+          margin-top: 17px;
+        }
+        .editor-panel .rotate button{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: calc(100% / 4 - 3px);
+        }
+        .rotate .options button:nth-child(3),
+        .rotate .options button:nth-child(4){
+          font-size: 18px;
+        }
+        .rotate .options button:active{
+          color: #fff;
+          background: #5372F0;
+          border-color: #5372F0;
+        }
+        .wrapper .preview-img{
+          flex-grow: 1;
+          display: flex;
+          overflow: hidden;
+          margin-left: 20px;
+          border-radius: 5px;
+          align-items: center;
+          justify-content: center;
+        }
+        .preview-img img{
+          max-width: 490px;
+          max-height: 335px;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+        .controls button{
+          padding: 11px 20px;
+          font-size: 14px;
+          border-radius: 3px;
+          outline: none;
+          color: #fff;
+          cursor: pointer;
+          background: none;
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+        }
+        .controls .undo-changes{
+          color: #6C757D;
+          border: 1px solid #6C757D;
+        }
+        .controls .undo-changes:hover{
+          color: #fff;
+          background: #6C757D;
+        }
+        .controls .choose-img{
+          background: #6C757D;
+          border: 1px solid #6C757D;
+        }
+        .controls .proceed-img{
+          margin-left: 5px;
+          background: #5372F0;
+          border: 1px solid #5372F0;
+        }
+
+        @media screen and (max-width: 760px) {
+          .container{
+            padding: 25px;
+          }
+          .container .wrapper{
+            flex-wrap: wrap-reverse;
+          }
+          .wrapper .editor-panel{
+            width: 100%;
+          }
+          .wrapper .preview-img{
+            width: 100%;
+            margin: 0 0 15px;
+          }
+        }
+
+        @media screen and (max-width: 500px) {
+          .controls button{
+            width: 100%;
+            margin-bottom: 10px;
+          }
+          .controls .row{
+            width: 100%;
+          }
+          .controls .row .proceed-img{
+            margin-left: 0px;
+          }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <nav>
+      <div class="logo-container">
+      <span class="logo-text">Healthcare Analysis <br>                   and Solutions</span>
+      </div>
+
+      <div class="navigation">
+        <ul> 
+          <li><a href="about.html">About</a></li>
+          <li><a href="#service">Our Services</a></li>
+          <li><a href="contact.html">Contact US</a></li>
+
+        </ul>
+      </div>
+      <img src="images/menu.png" alt="menu" class="menu-hamburger">
+    </nav> -->
+    
+        
+                
+    <div class="container disable">
+        <h2>Image Processing</h2>
+        <div class="wrapper">
+            <div class="editor-panel">
+                <div class="crop-area">
+                    <label class="title">Crop</label>
+                    <div class="options">
+                        <button class="aspect-ratio-btns">16:9</button>
+                        <button class="aspect-ratio-btns">4:3</button>
+                        <button class="aspect-ratio-btns">1:1</button>
+                        
+                        <button class="aspect-ratio-btns">Free</button>
+                        
+                    </div>
+                </div>
+                <div class="rotate">
+                    <label class="title">Rotate & Flip</label>
+                    <div class="options">
+                        <button id="left"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button id="right"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button id="horizontal"><i class='bx bx-reflect-vertical'></i></button>
+                        <button id="vertical"><i class='bx bx-reflect-horizontal' ></i></button>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="preview-img">
+                <img id="image" src="https://www.spict.org.uk/wp-content/uploads/2019/04/placeholder.png" alt="preview-img">
+            </div>
+            
+        </div>
+        <div class="controls">
+            <button class="undo-changes">Undo Changes</button>
+            <div class="row">
+                <input type="file" id="file" class="file-input" accept="image/*" hidden>
+                <button class="choose-img">Choose Image</button>
+                <button class="proceed-img">Proceed</button>
+            </div>
+        </div>
+    </div>
+    
+
+  <script>
+      let fileInput = document.getElementById("file");
+      let image = document.getElementById("image");
+      let cropper = "";
+     
+      
+      rotateOptions = document.querySelectorAll(".rotate button"),
+      previewImg = document.querySelector(".preview-img img"),
+      undoChangesBtn = document.querySelector(".undo-changes"),
+      chooseImgBtn = document.querySelector(".choose-img");
+      
+      let aspectRatioBtns = document.querySelectorAll(".aspect-ratio-btns");
+     
+      const proceedImgBtn = document.querySelector(".proceed-img");
+      fileInput.onchange = () => {
+       
+        let reader = new FileReader();
+        
+        reader.readAsDataURL(fileInput.files[0]);
+        reader.onload = () => {
+         
+         
+          image.setAttribute("src", reader.result);
+          if (cropper) {
+            cropper.destroy();
+          }
+          cropper = new Cropper(image);
+            document.querySelector(".container").classList.remove("disable");
+         
+        };
+        fileName = fileInput.files[0].name.split(".")[0];
+      };
+      
+      aspectRatioBtns.forEach((element) => {
+          element.addEventListener("click", () => {
+              if (element.innerText == "Free") {
+                  cropper.setAspectRatio(NaN);
+              } else {
+                  cropper.setAspectRatio(eval(element.innerText.replace(":", "/")));
+              }
+          });
+      });
+
+     
+    
+      rotateOptions.forEach(option => {
+          option.addEventListener("click", () => {
+              if (option.id === "left") {
+                  cropper.rotate(-90);
+              } else if (option.id === "right") {
+                  cropper.rotate(90);
+              } else if (option.id === "horizontal") {
+                  cropper.scaleX(-cropper.getData().scaleX);
+              } else if (option.id === "vertical") {
+                  cropper.scaleY(-cropper.getData().scaleY);
+              }
+              
+          });
+      });
+      
+      const undoChanges = () => {
+         
+          cropper.rotateTo(0);
+
+          
+          cropper.scaleX(1);
+          cropper.scaleY(1);
+
+          
+          cropper.setAspectRatio(NaN);
+      };
+
+     
+      // const sendToBackend = (croppedDataURL) => {
+      //     formData = new FormData();
+          
+      //     blob = dataURLtoBlob(croppedDataURL);
+      //     console.log(blob)
+
+   
+      //   formData.append('image', blob, 'cropped_image.png');
+      //   console.log(formData)
+
+          
+      //         fetch("/process_image_route", {
+      //             method: "POST",
+      //             body: formData,
+      //         }).then(response => {
+                  
+      //         if (response.ok) {
+      //             console.log("Image processing request sent successfully!");
+      //             window.location.href="/selectbody"
+      //         } else {
+                
+      //             console.error("Error sending image processing request!");
+      //         }
+      //     })
+      //     .catch(error => {
+              
+      //         console.error("Error sending image processing  request:", error);
+      //     });
+      // };
+
+      const dataURLtoBlob = (dataURL) => {
+          const byteString = atob(dataURL.split(',')[1]);
+          const mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+          const arrayBuffer = new ArrayBuffer(byteString.length);
+          const int8Array = new Uint8Array(arrayBuffer);
+          for (let i = 0; i < byteString.length; i++) {
+              int8Array[i] = byteString.charCodeAt(i);
+          }
+          return new Blob([arrayBuffer], { type: mimeString });
+      };
+    function sendImageToBackend(imageData) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/process_image_route", true);
+      // xhr.setRequestHeader("Content-Type", "multipart/form-data");
+
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+              if (xhr.status === 200) {
+                  console.log('Image processing request sent successfully!');
+                  window.location.href = "/selectbody";
+              } else {
+                  console.error('Error sending image processing request:', xhr.status);
+              }
+        }
+      };
+
+    // Create a FormData object and append the image data
+        const blob = dataURLtoBlob(imageData)
+        var formData = new FormData();
+        formData.append('image', blob, 'cropped_image.png');
+
+        xhr.send(formData);
+    }
+
+// Example usage:
+// Call this function with the image data obtained from cropper.getCroppedCanvas().toDataURL()
+  
+
+
+      proceedImgBtn.addEventListener("click", () => {
+          // const croppedDataURL = cropper.getCroppedCanvas({}).toDataURL();
+          // console.log(croppedDataURL);
+          // sendToBackend(croppedDataURL);
+          var croppedImageData = cropper.getCroppedCanvas().toDataURL();
+          sendImageToBackend(croppedImageData);
+      });
+
+      
+      undoChangesBtn.addEventListener("click", undoChanges);
+      //proceedImgBtn.addEventListener("click", saveImage);
+    
+      chooseImgBtn.addEventListener("click", (event) => {
+          event.preventDefault(); 
+          fileInput.click(); 
+      });
+      
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>MediSync</title>
+          <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
+       
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        
+      </head>
+      <body>
+          <nav>
+            <div class="logo-container">
+            <span class="logo-text">Healthcare Analysis <br>                   and Solutions</span>
+            </div>
+
+            <div class="navigation">
+              <ul> 
+                <li><a href="{{ url_for('static', filename='about.html') }}">About</a></li>
+                <li><a href="#service">Our Services</a></li>
+                <li><a href="{{ url_for('static', filename='contact.html') }}">Contact US</a></li>
+                
+              </ul>
+            </div>
+            <img src="{{ url_for('static', filename='images/menu.png') }}" alt="menu" class="menu-hamburger">
+          </nav>
+
+        <section id="home">
+          <h2 class="anim">Empowering,<b class="colblue">Health</b> <br> One <b class="colblue">Insight</b> at a Time</h2>
+            <p class="anim">
+              Check out our services and get started on your healthcare journey today!
+            </p>
+          <img src="https://static.vecteezy.com/system/resources/previews/035/681/291/original/ai-generated-female-doctor-isolated-on-transparent-background-free-png.png" alt="doct">
+          
+            <div class="bttn">
+                <a class="blue anim" href="/analyse">Analyze Now!</a>
+            </div>
+
+        </section>
+
+        <section class="services" id="service">
+          <h1 data-aos="zoom-in">Our Services</h1>
+          <div class="service" data-aos="zoom-in">
+            <img src="{{ url_for('static', filename='images/syringe.png') }}" alt="Recommendations">
+            <h3>Treatment Recommendations</h3>
+            <p>Provide personalized treatment based on patient data and medical history.</p>
+          </div>
+          <div class="service" data-aos="zoom-in">
+            <img src="{{ url_for('static', filename='images/dash.png') }}" alt="Analytics">
+            <h3>Healthcare Predictive Analytics</h3>
+            <p>Predictive analytics to forecase health outcomes.</p>
+          </div>
+          <div class="service" data-aos="zoom-in">
+            
+            <img src="{{ url_for('static', filename='images/inspection.png') }}" alt="detection">
+            <a href="/analyse">
+            <h3>Disease Detection and Diagnosis</h3></a>
+            <p>Use of Machine Learning algorithm to analyze images and medical data to detect diseases.</p>
+          </div>
+          
+        </section>
+
+          <footer>
+            <div class="footer-container">
+
+              <div class="footer-section" data-aos="zoom-in-up">
+                <h3>Healthcare Analysis and Solutions</h3>
+                <ul>
+                  
+                  <li><i class="fas fa-envelope"></i> Email: <a href="mailto:gehu.vineet.rawat.70.d2@gmail.com">gehu.vineet.rawat.70.d2@gmail.com</a></li>
+                  <li><i class="fas fa-map-marker-alt"></i> Address: Nathanpur, Nehrugram Dehradun, Uttarakhand</li>
+                </ul>
+              </div>
+              <div class="footer-section" data-aos="zoom-in-up" data-aos-duration="10000">
+                <h3>Follow Us</h3>
+                <ul class="social-media-icons">
+                  <li><a href="#"></i></a></li>
+                  <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                  <li><a href="#"></i></a></li>
+                  <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                  <li><a href="#"><i class="fab fa-whatsapp"></i></a>
+                </ul>
+              </div>
+
+            </div>
+            <div class="footer-outline">
+              <p>&copy; 2024 Healthcare Analysis and Solutions. All rights reserved.</p>
+            </div>
+          </footer>
+      </body>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js" integrity="sha512-CEiA+78TpP9KAIPzqBvxUv8hy41jyI3f2uHi7DGp/Y/Ka973qgSdybNegWFciqh6GrN2UePx2KkflnQUbUhNIA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+          const menuhamburger = document.querySelector(".menu-hamburger");
+          const navigation = document.querySelector(".navigation")
+
+          menuhamburger.addEventListener('click', () => {
+            navigation.classList.toggle('mobile-menu');
+
+          })
+          AOS.init();
+        </script>
+      </html>

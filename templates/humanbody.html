@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  
+<title>BodyParts Marking</title>
+ 
+  
+
+</head>
+<body>
+  <nav>
+    <div class="logo-container">
+    <span class="logo-text">Healthcare Analysis <br>                   and Solutions</span>
+    </div>
+
+    <div class="navigation">
+      <ul> 
+        <li><a href="about.html">About</a></li>
+        <li><a href="#service">Our Services</a></li>
+        <li><a href="contact.html">Contact US</a></li>
+
+      </ul>
+    </div>
+    <img src="{{ url_for('static', filename='images/menu.png') }}" alt="menu" class="menu-hamburger">
+  </nav>
+
+<div class="partinputcontainer">
+<div class="bodyimagecontainer">
+  <div id="bodypartselected">
+    <p class="pselected">Selected Parts</p>
+
+  </div>
+<div id="bodyMap">
+  
+  <img id="frontbodyimage" src="{{ url_for('static', filename='images/frontbody.png') }}" alt="Human Body" usemap="#bodyMap">
+
+</div>
+  
+
+</div>
+  <div class="mainselectpartguider">
+  <div class="selectpartguider">
+    <h1> Choose the body part</h1>
+    <p>from where the image was taken</p>
+    <div class="navbuttons">
+      <button id="prevbutton" onclick="prevImage()">Previous</button>
+      <button id="nextbutton" onclick="next()">Next</button>
+    </div>
+  
+  </div>
+    
+  </div>
+  
+
+  
+  <script >
+  var selectedBodyParts= [];
+  
+  function showInfo(bodyPart) {
+    
+   
+    if(!selectedBodyParts.includes(bodyPart)){
+      selectedBodyParts.push(bodyPart);
+      
+    
+      var select_partbox = document.createElement("div");
+      select_partbox.className = "selected_partbox";
+      
+      var selectedpart = document.createElement("div");
+      selectedpart.textContent = bodyPart;
+      select_partbox.appendChild(selectedpart);
+  
+       var selectedbodypartdiv = document.getElementById("bodypartselected");
+      selectedbodypartdiv.appendChild(select_partbox);
+       if (!selectedBodyParts.length == 0){
+         selectedbodypartdiv.style.display = "block";
+       }
+       else {
+         selectedbodypartdiv.style.display = "none";
+       }
+
+     var iconbutton = document.createElement("div");
+     iconbutton.className="iconButton";
+     select_partbox.appendChild(iconbutton);
+  
+     var svg = document.createElement("svg");
+     svg.setAttribute("height", "24");
+     svg.setAttribute("width", "24");
+     svg.setAttribute("viewBox", "0 0 24 24");
+     var img = document.createElement("img");
+     img.setAttribute("width", "23");
+     img.setAttribute("height", "23");
+     img.setAttribute("src", "{{ url_for('static', filename='images/cancle.png') }}");
+     img.setAttribute("alt", "cancel");
+     img.setAttribute("id", "cancel");
+     img.setAttribute("onclick", "hideSelectedPart(this.parentNode.parentNode,  this.parentNode.previousSibling)");
+  
+     iconbutton.appendChild(svg);
+     iconbutton.appendChild(img);
+  
+      
+    }
+  }
+    
+  function next() {
+     var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/humanbody", true); 
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) { 
+            if (xhr.status === 200) { 
+                console.log('Success');
+                 window.location.href = "/result";
+            
+                
+            } else {
+                console.error('Error:', xhr.status);
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ bodyParts: selectedBodyParts }));
+    
+  }
+
+  function hideSelectedPart(parentNode, bodyPartElement) {
+    selectedBodyParts.pop(bodyPartElement);
+    
+    bodyPartElement.textContent ="";
+     parentNode.parentNode.removeChild(parentNode);
+
+    var selectedbodypartdiv = document.getElementById("bodypartselected");
+    
+     if (selectedBodyParts.length == 0){
+       selectedbodypartdiv.style.display = "none";
+     }
+     else {
+       selectedbodypartdiv.style.display = "block";
+     }    
+    
+    
+    
+  }
+
+
+  </script>
+  </div>
+  <map name="bodyMap">
+      <area target="" alt="Head" title="Head" onclick="showInfo('Head')" coords="139,115,148,112,159,106,168,95,171,74,172,57,168,45,160,36,151,29,136,28,123,31,114,39,108,47,106,58,106,77,107,91,116,106,125,112,132,114,136,115" shape="poly">
+      <area target="" alt="Chest" title="Chest" onclick="showInfo('Chest')" coords="138,138,184,154,191,185,181,230,96,231,86,187,91,156" shape="poly">
+      <area target="" alt="Abdomen" title="Abdomen" onclick="showInfo('Abdomen')" coords="138,237,181,232,180,254,181,267,182,285,139,294,95,285,97,268,97,251,96,234" shape="poly">
+      <area target="" alt="Thighs" title="Thighs" onclick="showInfo('Thigh')" coords="185,307,187,322,189,346,187,374,184,391,180,412,161,408,142,411,139,394,140,377,139,361,140,342,137,335,136,356,137,382,135,412,116,407,97,416,91,375,89,351,91,312,107,323,138,335,138,335,161,326" shape="poly">
+      <area target="" alt="Knee" title="Knee" onclick="showInfo('Knee')" coords="104,445,116,449,126,448,134,441,135,418,117,412,100,421,104,435" shape="poly">
+      <area target="" alt="Lower Leg" title="Lower Leg" onclick="showInfo('Lower Leg')" coords="114,546,136,546,135,533,135,520,135,510,136,498,137,484,137,470,136,459,135,450,125,455,113,456,101,452,101,460,100,472,101,482,103,498,106,510,108,520,112,532" shape="poly">
+      <area target="" alt="Upper Arm" title="Upper Arm" onclick="showInfo('Upper Arm')" coords="71,144,89,155,88,167,87,177,85,186,85,193,85,203,83,212,81,223,79,235,79,245,65,243,54,239,55,225,55,211,56,193,59,176,60,160,66,150,67,147" shape="poly">
+      <area target="" alt="Lower Arm" title="Lower Arm" onclick="showInfo('Lower Arm')" coords="61,260,78,260,77,267,75,281,70,292,65,304,62,314,51,312,41,310,42,293,44,272,49,255" shape="poly">
+      <area target="" alt="Inside Elbow" title="Inside Elbow" onclick="showInfo('Inside Elbow')" coords="53,241,50,251,61,256,78,256,78,247,65,246" shape="poly">
+      <area target="" alt="Groin Folds" title="Groin Folds" onclick="showInfo('Groin Folds')" coords="141,330,156,324,166,312,156,308,152,316,142,323" shape="poly">
+      <area target="" alt="Upper Arm" title="Upper Arm" onclick="showInfo('Upper Arm')" coords="185,153,201,142,211,149,213,155,216,161,217,170,218,180,219,188,220,194,223,203,223,215,222,224,223,238,211,241,197,239,193,218,191,206,191,196,192,183,189,171" shape="poly">
+      <area target="" alt="Lower Arm" title="Lower Arm" onclick="showInfo('Lower Arm')" coords="215,264,229,258,232,269,232,278,232,284,234,294,236,304,237,310,215,311,211,302,208,294,205,286,202,275,198,260" shape="poly">
+      <area target="" alt="Inner Elbow" title="Inner Elbow" onclick="showInfo('Inner Elbow')" coords="199,256,213,259,227,254,224,242,212,247,197,243" shape="poly">
+      <area target="" alt="Knee" title="Knee" onclick="showInfo('Knee')" coords="142,418,161,414,177,420,174,429,173,440,165,444,152,445,143,440,144,429" shape="poly">
+      <area target="" alt="Lower Leg" title="Lower Leg" onclick="showInfo('Lower Leg')" coords="173,449,176,456,176,466,177,476,175,488,173,499,171,513,168,525,165,536,162,547,142,546,142,535,141,524,141,514,140,501,140,488,139,478,139,467,140,460,141,453,142,447,151,454,161,454" shape="poly">
+      <area target="" alt="Groin Folds" title="Groin Folds" onclick="showInfo('Groin Folds')" coords="134,329,120,323,110,315,117,307,124,315,132,322" shape="poly">
+      <area target="" alt="Shoulder" title="Shoulder" onclick="showInfo('Shoulder')" coords="91,154,100,150,110,147,118,143,128,139,140,135,184,151,199,140,170,129,154,123,121,123,99,131,75,142" shape="poly">
+      <area target="" alt="hip area" title="hip area" onclick="showInfo('Hip Area')" coords="139,314,165,301,169,316,184,306,182,287,140,299,95,288,91,311,107,321,112,302" shape="poly">
+  </map>
+
+
+
+</body>
+</html>
